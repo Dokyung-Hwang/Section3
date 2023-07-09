@@ -1,43 +1,47 @@
 package com.codestates.coffee;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
-@RequestMapping(value = "/v1/coffees", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping("/v1/coffees")
 public class CoffeeController {
 
     @PostMapping
-    public String postCoffee(@RequestParam("engName") String engName,
+    public ResponseEntity<?> postCoffee(@RequestParam("engName") String engName,
                              @RequestParam("korName") String korName,
                              @RequestParam("price") int price) {
-        System.out.println("# engName: " + engName);
-        System.out.println("# korName: " + korName);
-        System.out.println("# price: " + price);
 
-        String response =
-                "{\"" +
-                        "engName\":\""+engName+"\"," +
-                        "\"korName\":\""+korName+"\",\"" +
-                        "price\":\"" + price+
-                        "\"}";
+        Map<String, Object> map = new HashMap<>();
+        map.put("engName", engName);
+        map.put("korName", korName);
+        map.put("price", price);
 
-        return response;
+
+        long savedCoffeeId = 1L;
+
+//        return new ResponseEntity<>(map, HttpStatus.CREATED);
+        return ResponseEntity.created(URI.create("/members/" + savedCoffeeId)).body(map);
     }
 
     @GetMapping("/{coffee-id}")
-    public String getCoffee(@PathVariable("coffee-id") long coffeeId) {
+    public ResponseEntity<?> getCoffee(@PathVariable("coffee-id") long coffeeId) {
         System.out.println("# coffeeId: " + coffeeId);
 
-        return null;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping
-    public String getCoffees() {
+    public ResponseEntity<?> getCoffees() {
         System.out.println("# get Coffees");
 
-        return null;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }
