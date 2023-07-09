@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,8 +14,13 @@ import java.util.Map;
 public class OrderController {
 
     @PostMapping
-    public ResponseEntity<?> postOrder(@RequestParam("memberId") long memberId,
-                                    @RequestParam("coffeeId") long coffeeId) {
+    public ResponseEntity<?> postOrder(HttpServletRequest httpServletRequest,
+                                       @RequestParam("memberId") long memberId,
+                                       @RequestParam("coffeeId") long coffeeId) {
+
+        System.out.println("user-agent: " + httpServletRequest.getHeader("user-agent"));
+        System.out.println("accept: " + httpServletRequest.getHeader("accept"));
+        System.out.println("cache-control: " + httpServletRequest.getHeader("cache-control"));
 
         Map<String, Long> map = new HashMap<>();
         map.put("memberId", memberId);
