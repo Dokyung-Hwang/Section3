@@ -13,7 +13,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/coffees")
-public class CoffeeController {
+public class CoffeeControllerV1 {
 
     private final Map<Long, Map<String, Object>> coffees = new HashMap<>();
 

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,24 +20,23 @@ import java.util.Map;
 public class MemberControllerV2 {
 
     @PostMapping
-    public ResponseEntity<?> postMember(@RequestBody MemberPostDto memberPostDto) {
+    public ResponseEntity<?> postMember(@Valid @RequestBody MemberPostDto memberPostDto) {
 
         return new ResponseEntity<>(memberPostDto, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{member-id}")
-    public ResponseEntity<?> patchMember(@PathVariable("member-id") Long memberId,
-                                         @RequestBody MemberPatchDto memberPatchDto) {
+    public ResponseEntity<?> patchMember(@PathVariable("member-id") @Min(1) long memberId,
+                                         @Valid @RequestBody MemberPatchDto memberPatchDto) {
 
         memberPatchDto.setMemberId(memberId);
-        memberPatchDto.setName("홍길동");
 
         return new ResponseEntity<>(memberPatchDto, HttpStatus.OK);
     }
 
 
     @GetMapping("{member-id}")
-    public ResponseEntity<?> getMember(@PathVariable("member-id") long memberId) {
+    public ResponseEntity<?> getMember(@PathVariable("member-id") @Min(1) long memberId) {
         System.out.println("# memberId: " + memberId);
 
 
@@ -51,7 +52,7 @@ public class MemberControllerV2 {
     }
 
     @DeleteMapping("/{member-id}")
-    public ResponseEntity<?> deleteMember(@PathVariable("member-id") Long memberId) {
+    public ResponseEntity<?> deleteMember(@PathVariable("member-id") @Min(1) long memberId) {
         // No need business logic
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
